@@ -1,3 +1,5 @@
+package com.wolfe.systembenchmark;
+
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -144,7 +146,4 @@ public class SystemBenchmark {
 
         return hashtableOfIntegers;
     }
-
-
-
 }
