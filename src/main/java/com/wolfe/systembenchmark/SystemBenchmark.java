@@ -12,6 +12,11 @@ public class SystemBenchmark {
         runHashTableBenchmark(size);
     }
 
+    /**
+     * Contains logic for running the ArrayList population/depopulation benchmark.
+     *
+     * @param size
+     */
     public static void runArrayListBenchmark(int size) {
 
         System.out.println("Beginning ArrayList test...");
@@ -36,25 +41,11 @@ public class SystemBenchmark {
         System.out.println("Total elapsed time: " + testTime + "ms\n");
     }
 
-    public static ArrayList<Integer> depopulateArrayList(ArrayList<Integer> arrayList) {
-
-        while(!arrayList.isEmpty()){
-            arrayList.remove(0);
-        }
-        return arrayList;
-    }
-
-    public static ArrayList<Integer> populateArrayList(int arrayListSize) {
-
-        ArrayList<Integer> arrayListOfIntegers = new ArrayList<>();
-
-        for(int i = 0; i < arrayListSize; i++){
-            arrayListOfIntegers.add(ThreadLocalRandom.current().nextInt());
-        }
-
-        return arrayListOfIntegers;
-    }
-
+    /**
+     * Contains logic for running the LinkedList population/depopulation benchmark.
+     *
+     * @param size
+     */
     public static void runLinkedListBenchmark(int size) {
 
         System.out.println("Beginning LinkedList test...");
@@ -79,26 +70,11 @@ public class SystemBenchmark {
         System.out.println("Total elapsed time: " + testTime + "ms\n");
     }
 
-    public static LinkedList<Integer> depopulateLinkedList(LinkedList<Integer> linkedList) {
-
-        while(!linkedList.isEmpty()){
-            linkedList.remove(0);
-        }
-
-        return linkedList;
-    }
-
-    public static LinkedList<Integer> populateLinkedLIst(int linkedListSize) {
-
-        LinkedList<Integer> linkedListOfIntegers = new LinkedList<>();
-
-        for(int i = 0; i < linkedListSize; i++){
-            linkedListOfIntegers.add(ThreadLocalRandom.current().nextInt());
-        }
-
-        return linkedListOfIntegers;
-    }
-
+    /**
+     * Contains logic for running the Hashtable population/depopulation benchmark.
+     *
+     * @param size
+     */
     public static void runHashTableBenchmark(int size) {
 
         System.out.println("Beginning Hashtable test...");
@@ -124,6 +100,77 @@ public class SystemBenchmark {
         System.out.println("Total elapsed time: " + testTime + "ms\n");
     }
 
+    /**
+     * Iteratively removes elements of the given ArrayList and returns the emptied ArrayList.
+     *
+     * @param arrayList
+     * @return
+     */
+    public static ArrayList<Integer> depopulateArrayList(ArrayList<Integer> arrayList) {
+
+        while(!arrayList.isEmpty()){
+            arrayList.remove(0);
+        }
+        return arrayList;
+    }
+
+    /**
+     * Creates and populates an ArrayList of given size with randomly generated integers, then returns the
+     * filled ArrayList.
+     *
+     * @param arrayListSize
+     * @return
+     */
+    public static ArrayList<Integer> populateArrayList(int arrayListSize) {
+
+        ArrayList<Integer> arrayListOfIntegers = new ArrayList<>();
+
+        for(int i = 0; i < arrayListSize; i++){
+            arrayListOfIntegers.add(ThreadLocalRandom.current().nextInt());
+        }
+
+        return arrayListOfIntegers;
+    }
+
+    /**
+     * Iteratively removes elements of the given LinkedList and returns the emptied LinkedList.
+     *
+     * @param linkedList
+     * @return
+     */
+    public static LinkedList<Integer> depopulateLinkedList(LinkedList<Integer> linkedList) {
+
+        while(!linkedList.isEmpty()){
+            linkedList.remove(0);
+        }
+
+        return linkedList;
+    }
+
+    /**
+     * Creates and populates a LinkedList of given size with randomly generated integers, then returns the
+     * filled LinkedList.
+     *
+     * @param linkedListSize
+     * @return
+     */
+    public static LinkedList<Integer> populateLinkedLIst(int linkedListSize) {
+
+        LinkedList<Integer> linkedListOfIntegers = new LinkedList<>();
+
+        for(int i = 0; i < linkedListSize; i++){
+            linkedListOfIntegers.add(ThreadLocalRandom.current().nextInt());
+        }
+
+        return linkedListOfIntegers;
+    }
+
+    /**
+     * Iteratively removes elements of the given Hashtable and returns the emptied Hashtable.
+     *
+     * @param hashTable
+     * @return
+     */
     public static Hashtable<Integer, Integer> depopulateHashTable(Hashtable<Integer, Integer> hashTable) {
 
         Iterator<Map.Entry<Integer, Integer>> iterator = hashTable.entrySet().iterator();
@@ -136,6 +183,13 @@ public class SystemBenchmark {
         return hashTable;
     }
 
+    /**
+     * Creates and populates a Hashtable of given size with randomly generated integers, then returns the
+     * filled Hashtable.
+     *
+     * @param hashMapSize
+     * @return
+     */
     public static Hashtable<Integer, Integer> populateHashtable(int hashMapSize) {
 
         Hashtable<Integer, Integer> hashtableOfIntegers = new Hashtable<>();
