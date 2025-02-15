@@ -3,7 +3,15 @@ package com.wolfe.systembenchmark;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
+/**
+ *
+ * Primary class.
+ */
 public class SystemBenchmark {
+    /**
+     *
+     * @param args Optional parameters.
+     */
     public static void main(String[] args) {
         int size = 1000000;
 
@@ -15,7 +23,7 @@ public class SystemBenchmark {
     /**
      * Contains logic for running the ArrayList population/depopulation benchmark.
      *
-     * @param size
+     * @param size Size of data structure to be passed to population method.
      */
     public static void runArrayListBenchmark(int size) {
 
@@ -44,7 +52,7 @@ public class SystemBenchmark {
     /**
      * Contains logic for running the LinkedList population/depopulation benchmark.
      *
-     * @param size
+     * @param size Size of data structure to be passed to population method.
      */
     public static void runLinkedListBenchmark(int size) {
 
@@ -73,7 +81,7 @@ public class SystemBenchmark {
     /**
      * Contains logic for running the Hashtable population/depopulation benchmark.
      *
-     * @param size
+     * @param size Size of data structure to be passed to population method.
      */
     public static void runHashTableBenchmark(int size) {
 
@@ -103,8 +111,8 @@ public class SystemBenchmark {
     /**
      * Iteratively removes elements of the given ArrayList and returns the emptied ArrayList.
      *
-     * @param arrayList
-     * @return
+     * @param arrayList ArrayList to be depopulated.
+     * @return Return empty ArrayList.
      */
     public static ArrayList<Integer> depopulateArrayList(ArrayList<Integer> arrayList) {
 
@@ -118,8 +126,8 @@ public class SystemBenchmark {
      * Creates and populates an ArrayList of given size with randomly generated integers, then returns the
      * filled ArrayList.
      *
-     * @param arrayListSize
-     * @return
+     * @param arrayListSize Expected size of populated ArrayList.
+     * @return Return populated ArrayList.
      */
     public static ArrayList<Integer> populateArrayList(int arrayListSize) {
 
@@ -135,8 +143,8 @@ public class SystemBenchmark {
     /**
      * Iteratively removes elements of the given LinkedList and returns the emptied LinkedList.
      *
-     * @param linkedList
-     * @return
+     * @param linkedList LinkedList to be depopulated.
+     * @return Return empty LinkedList.
      */
     public static LinkedList<Integer> depopulateLinkedList(LinkedList<Integer> linkedList) {
 
@@ -151,8 +159,8 @@ public class SystemBenchmark {
      * Creates and populates a LinkedList of given size with randomly generated integers, then returns the
      * filled LinkedList.
      *
-     * @param linkedListSize
-     * @return
+     * @param linkedListSize Expected size of populated LinkedList.
+     * @return Return populated LinkedList.
      */
     public static LinkedList<Integer> populateLinkedLIst(int linkedListSize) {
 
@@ -168,8 +176,8 @@ public class SystemBenchmark {
     /**
      * Iteratively removes elements of the given Hashtable and returns the emptied Hashtable.
      *
-     * @param hashTable
-     * @return
+     * @param hashTable Hashtable to be depopulated.
+     * @return Return empty Hashtable.
      */
     public static Hashtable<Integer, Integer> depopulateHashTable(Hashtable<Integer, Integer> hashTable) {
 
@@ -187,8 +195,8 @@ public class SystemBenchmark {
      * Creates and populates a Hashtable of given size with randomly generated integers, then returns the
      * filled Hashtable.
      *
-     * @param hashMapSize
-     * @return
+     * @param hashMapSize Expected size of populated Hashtable.
+     * @return Return populated Hashtable.
      */
     public static Hashtable<Integer, Integer> populateHashtable(int hashMapSize) {
 
