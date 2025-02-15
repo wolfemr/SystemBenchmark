@@ -8,7 +8,16 @@ import java.util.LinkedList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+
 public class BenchmarkUnitTests {
+
+    /**
+     *
+     * Population tests validate that the requisite data structures are created and
+     * are returned with the right sizes.
+     *
+     * Depopulation tests validate that the returned data structure's size is 0 as expected.
+     */
 
     @Test
     void testArrayListPopulationSize() {
