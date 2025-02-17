@@ -1,4 +1,4 @@
-System Bencharmk
+System Benchmark
 Michael Wolfe, 2025
 
 
