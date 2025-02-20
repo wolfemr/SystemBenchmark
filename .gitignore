@@ -1,7 +1,15 @@
 target/
+.mvn/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
+.dockerignore
+compose.yaml
+Dockerfile
+mvnw
+mvnw.cmd
+README.Docker.md
+
 
 ### IntelliJ IDEA ###
 .idea/modules.xml
