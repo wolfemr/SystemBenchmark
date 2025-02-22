@@ -13,11 +13,18 @@ public class SystemBenchmark {
      * @param args Optional parameters.
      */
     public static void main(String[] args) {
+
         int size = 1000000;
+        double testStartTime = System.currentTimeMillis();
 
         runArrayListBenchmark(size);
         runLinkedListBenchmark(size);
         runHashTableBenchmark(size);
+        runQueueBenchmark(size);
+
+        double testEndTime = System.currentTimeMillis();
+        double testTime = (testEndTime - testStartTime) / 1000.0;
+        System.out.println("Total test time: " + testTime + " seconds.");
     }
 
     /**
@@ -105,6 +112,36 @@ public class SystemBenchmark {
         double testTime = testEndTime - testStartTime;
 
         System.out.println("Hashtable run complete.");
+        System.out.println("Total elapsed time: " + testTime + "ms\n");
+    }
+
+    /**
+     * Contains logic for running the Queue population/depopulation benchmark.
+     *
+     * @param size Size of data structure to be passed to population method.
+     */
+    public static void runQueueBenchmark(int size) {
+
+        System.out.println("Beginning Queue test...");
+
+        double testStartTime = System.currentTimeMillis();
+
+        System.out.println("Populating Queue...");
+
+        Queue<Integer> populatedQueue = populateQueue(size);
+
+        System.out.println("Queue populated. \nQueue size: " + populatedQueue.size());
+
+        System.out.println("Depopulating Queue...");
+
+        Queue<Integer> depopulatedQueue = depopulateQueue(populatedQueue);
+
+        System.out.println("Queue depopulated. \nQueue size: " + depopulatedQueue.size());
+
+        double testEndTime = System.currentTimeMillis();
+        double testTime = testEndTime - testStartTime;
+
+        System.out.println("Queue run complete.");
         System.out.println("Total elapsed time: " + testTime + "ms\n");
     }
 
@@ -207,5 +244,38 @@ public class SystemBenchmark {
         }
 
         return hashtableOfIntegers;
+    }
+
+    /**
+     * Iteratively removes elements of the given Queue and returns the emptied Queue.
+     *
+     * @param queue Queue to be depopulated.
+     * @return Return empty Queue.
+     */
+    public static Queue<Integer> depopulateQueue(Queue<Integer> queue) {
+
+        while(!queue.isEmpty()){
+            queue.remove();
+        }
+
+        return queue;
+    }
+
+    /**
+     * Creates and populates a Queue of given size with randomly generated integers, then returns the
+     * filled Queue.
+     *
+     * @param queueSize Expected size of populated Queue.
+     * @return Return populated Queue.
+     */
+    public static Queue<Integer> populateQueue(int queueSize) {
+
+        Queue<Integer> queueOfIntegers = new LinkedList<>();
+
+        for(int i = 0; i < queueSize; i++) {
+            queueOfIntegers.add(ThreadLocalRandom.current().nextInt());
+        }
+
+        return queueOfIntegers;
     }
 }
