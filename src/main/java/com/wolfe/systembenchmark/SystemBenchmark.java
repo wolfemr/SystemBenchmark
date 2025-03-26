@@ -17,6 +17,16 @@ public class SystemBenchmark {
         int size = 1000000;
         double testStartTime = System.currentTimeMillis();
 
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Press enter to begin the test.");
+
+        try {
+            scanner.nextLine();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         runArrayListBenchmark(size);
         runLinkedListBenchmark(size);
         runHashTableBenchmark(size);
