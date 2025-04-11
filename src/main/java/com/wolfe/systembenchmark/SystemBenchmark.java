@@ -1,21 +1,33 @@
 package com.wolfe.systembenchmark;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.TimeUnit;
 
 /**
  *
  * Primary class.
  */
 public class SystemBenchmark {
+
+    private static final int workerCount = 5;
+    private static final int workerTasks = 5;
+    private static final Logger logger = LogManager.getLogger("tasklog");
+
     /**
      *
      * @param args Optional parameters.
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
 
         int size = 1000000;
-        double testStartTime = System.currentTimeMillis();
+
+        ExecutorService executorService = Executors.newFixedThreadPool(workerCount);
+
 
         Scanner scanner = new Scanner(System.in);
 
@@ -24,17 +36,58 @@ public class SystemBenchmark {
         try {
             scanner.nextLine();
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
 
-        runArrayListBenchmark(size);
-        runLinkedListBenchmark(size);
-        runHashTableBenchmark(size);
-        runQueueBenchmark(size);
+        double testStartTime = System.currentTimeMillis();
+
+        // BEGIN ArrayList Test Block
+        for (int i = 1; i <= workerCount; i++) {
+            int workerNumber = i;
+            executorService.submit(() -> runArrayListBenchmark(size, workerNumber));
+        }
+        //END ArrayList Test Block
+
+
+        //BEGIN LinkedList Test Block
+        for (int i = 1; i <= workerCount; i++) {
+            int workerNumber = i;
+            executorService.submit(() -> runLinkedListBenchmark(size, workerNumber));
+        }
+        //END LinkedList Test Block
+
+
+        //BEGIN HashTable Test Block
+        for (int i = 1; i <= workerCount; i++) {
+            int workerNumber = i;
+            executorService.submit(() -> runHashTableBenchmark(size, workerNumber));
+        }
+        //END HashTable Test BLock
+
+
+        //BEGIN Queue Test Block
+        for (int i = 1; i <= workerCount; i++) {
+            int workerNumber = i;
+            executorService.submit(() -> runQueueBenchmark(size, workerNumber));
+        }
+        //END Queue Test Block
+
+        executorService.shutdown();
+        try {
+            if (!executorService.awaitTermination(10, TimeUnit.SECONDS)) {
+                executorService.shutdownNow();
+            }
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            logger.error(e.getMessage());
+        }
 
         double testEndTime = System.currentTimeMillis();
         double testTime = (testEndTime - testStartTime) / 1000.0;
-        System.out.println("Total test time: " + testTime + " seconds.");
+        logger.info("Total test time: {} seconds.", testTime);
+
+        // Simulate Error message for logging
+        simulateError();
     }
 
     /**
@@ -42,28 +95,33 @@ public class SystemBenchmark {
      *
      * @param size Size of data structure to be passed to population method.
      */
-    public static void runArrayListBenchmark(int size) {
+    public static void runArrayListBenchmark(int size, int workerNumber) {
 
-        System.out.println("Beginning ArrayList test...");
+        for (int task = 1; task <= workerTasks; task++) {
 
-        double testStartTime = System.currentTimeMillis();
+            logger.info("Worker {} beginning ArrayList test {}", workerNumber, task);
 
-        System.out.println("Populating ArrayList...");
+            try {
+                if (Math.random() < 0.05) {
+                    logger.warn("Worker {} running ArrayList test {} failed!", workerNumber, task);
+                } else {
 
-        ArrayList<Integer> populatedArrayList = populateArrayList(size);
+                    double testStartTime = System.currentTimeMillis();
 
-        System.out.println("ArrayList populated. \nArrayList size: " + populatedArrayList.size());
+                    ArrayList<Integer> populatedArrayList = populateArrayList(size);
+                    ArrayList<Integer> depopulatedArrayList = depopulateArrayList(populatedArrayList);
 
-        System.out.println("Depopulating ArrayList...");
-        ArrayList<Integer> depopulatedArrayList = depopulateArrayList(populatedArrayList);
+                    double testEndTime = System.currentTimeMillis();
+                    double testTime = testEndTime - testStartTime;
 
-        System.out.println("ArrayList depopulated. Arraylist size: " + depopulatedArrayList.size());
+                    logger.info("Worker {} ArrayList test {} complete.", workerNumber, task);
+                    logger.info("Total ArrayList test {} time: {} ms.", task, testTime);
 
-        double testEndTime = System.currentTimeMillis();
-        double testTime = testEndTime - testStartTime;
-
-        System.out.println("ArrayList test complete.");
-        System.out.println("Total elapsed time: " + testTime + "ms\n");
+                }
+            } catch (Exception e) {
+                logger.error(e.getMessage(), e);
+            }
+        }
     }
 
     /**
@@ -71,28 +129,31 @@ public class SystemBenchmark {
      *
      * @param size Size of data structure to be passed to population method.
      */
-    public static void runLinkedListBenchmark(int size) {
+    public static void runLinkedListBenchmark(int size, int workerNumber) {
 
-        System.out.println("Beginning LinkedList test...");
+        for (int task = 1; task <= workerTasks; task++) {
 
-        double testStartTime = System.currentTimeMillis();
+            logger.info("Worker {} beginning LinkedList test {}", workerNumber, task);
 
-        System.out.println("Populating LinkedList...");
+            try {
+                if (Math.random() < 0.05) {
+                    logger.warn("Worker {} running LinkedList test {} failed!", workerNumber, task);
+                } else {
+                    double testStartTime = System.currentTimeMillis();
 
-        LinkedList<Integer> populatedLinkedList = populateLinkedLIst(size);
+                    LinkedList<Integer> populatedLinkedList = populateLinkedLIst(size);
+                    LinkedList<Integer> depopulatedLinkedList = depopulateLinkedList(populatedLinkedList);
 
-        System.out.println("LinkedList populated. \nLinkedList size: " + populatedLinkedList.size());
+                    double testEndTime = System.currentTimeMillis();
+                    double testTime = testEndTime - testStartTime;
 
-        System.out.println("Depopulating LinkedList...");
-        LinkedList<Integer> depopulatedLinkedList = depopulateLinkedList(populatedLinkedList);
-
-        System.out.println("LinkedList depopulated. \nLinkedList size: " + depopulatedLinkedList.size());
-
-        double testEndTime = System.currentTimeMillis();
-        double testTime = testEndTime - testStartTime;
-
-        System.out.println("LinkedList test complete.");
-        System.out.println("Total elapsed time: " + testTime + "ms\n");
+                    logger.info("Worker {} LinkedList test {} complete.", workerNumber, task);
+                    logger.info("Total LinkedList test {} time: {} ms.", task, testTime);
+                }
+            } catch (Exception e) {
+                logger.error(e.getMessage(), e);
+            }
+        }
     }
 
     /**
@@ -100,29 +161,32 @@ public class SystemBenchmark {
      *
      * @param size Size of data structure to be passed to population method.
      */
-    public static void runHashTableBenchmark(int size) {
+    public static void runHashTableBenchmark(int size, int workerNumber) {
 
-        System.out.println("Beginning Hashtable test...");
+        for (int task = 1; task <= workerTasks; task++) {
 
-        double testStartTime = System.currentTimeMillis();
+            logger.info("Worker {} beginning HashTable test {}", workerNumber, task);
 
-        System.out.println("Populating Hashtable...");
+            try {
+                if (Math.random() < 0.05) {
+                    logger.warn("Worker {} running HashTable test {} failed!", workerNumber, task);
+                } else {
 
-        Hashtable<Integer, Integer> populatedHashTable = populateHashtable(size);
+                    double testStartTime = System.currentTimeMillis();
 
-        System.out.println("Hashtable populated. \nHashtable size: " + populatedHashTable.size());
+                    Hashtable<Integer, Integer> populatedHashTable = populateHashtable(size);
+                    Hashtable<Integer, Integer> depopulatedHashtable = depopulateHashTable(populatedHashTable);
 
-        System.out.println("Depopulating Hashtable...");
+                    double testEndTime = System.currentTimeMillis();
+                    double testTime = testEndTime - testStartTime;
 
-        Hashtable<Integer, Integer> depopulatedHashtable = depopulateHashTable(populatedHashTable);
-
-        System.out.println("Hashtable depopulated. \nHashtable size: " + depopulatedHashtable.size());
-
-        double testEndTime = System.currentTimeMillis();
-        double testTime = testEndTime - testStartTime;
-
-        System.out.println("Hashtable run complete.");
-        System.out.println("Total elapsed time: " + testTime + "ms\n");
+                    logger.info("Worker {} HashTable test {} complete.", workerNumber, task);
+                    logger.info("Total HashTable test {} time: {} ms.", task, testTime);
+                }
+            } catch (Exception e) {
+                logger.error(e.getMessage(), e);
+            }
+        }
     }
 
     /**
@@ -130,29 +194,32 @@ public class SystemBenchmark {
      *
      * @param size Size of data structure to be passed to population method.
      */
-    public static void runQueueBenchmark(int size) {
+    public static void runQueueBenchmark(int size, int workerNumber) {
 
-        System.out.println("Beginning Queue test...");
+        for (int task = 1; task <= workerTasks; task++) {
 
-        double testStartTime = System.currentTimeMillis();
+            logger.info("Worker {} beginning Queue test {}", workerNumber, task);
 
-        System.out.println("Populating Queue...");
+            try {
+                if (Math.random() < 0.05) {
+                    logger.warn("Worker {} running Queue test {} failed!", workerNumber, task);
+                } else {
 
-        Queue<Integer> populatedQueue = populateQueue(size);
+                    double testStartTime = System.currentTimeMillis();
 
-        System.out.println("Queue populated. \nQueue size: " + populatedQueue.size());
+                    Queue<Integer> populatedQueue = populateQueue(size);
+                    Queue<Integer> depopulatedQueue = depopulateQueue(populatedQueue);
 
-        System.out.println("Depopulating Queue...");
+                    double testEndTime = System.currentTimeMillis();
+                    double testTime = testEndTime - testStartTime;
 
-        Queue<Integer> depopulatedQueue = depopulateQueue(populatedQueue);
-
-        System.out.println("Queue depopulated. \nQueue size: " + depopulatedQueue.size());
-
-        double testEndTime = System.currentTimeMillis();
-        double testTime = testEndTime - testStartTime;
-
-        System.out.println("Queue run complete.");
-        System.out.println("Total elapsed time: " + testTime + "ms\n");
+                    logger.info("Worker {} Queue test {} complete.", workerNumber, task);
+                    logger.info("Total Queue test {} time: {} ms.", task, testTime);
+                }
+            } catch (Exception e) {
+                logger.error(e.getMessage(), e);
+            }
+        }
     }
 
     /**
@@ -163,8 +230,13 @@ public class SystemBenchmark {
      */
     public static ArrayList<Integer> depopulateArrayList(ArrayList<Integer> arrayList) {
 
+        /* SLOWER METHOD
         while(!arrayList.isEmpty()){
             arrayList.remove(0);
+        }*/
+
+        for (int i = arrayList.size() - 1; i >= 0; i--) {
+            arrayList.remove(i);
         }
         return arrayList;
     }
@@ -287,5 +359,13 @@ public class SystemBenchmark {
         }
 
         return queueOfIntegers;
+    }
+
+    public static void simulateError() {
+        try {
+            throw new RuntimeException("Simulated error occurred!");
+        } catch (RuntimeException e) {
+            logger.error(e.getMessage(), e);
+        }
     }
 }
